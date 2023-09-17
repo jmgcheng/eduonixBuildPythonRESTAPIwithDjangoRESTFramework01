@@ -16,5 +16,5 @@ urlpatterns = [
     # path('articles/<slug:slug>/', ArticleDetails.as_view()),
 
     path('', include(router.urls)),
-    # path('articles/<slug:slug>/', ArticleDetails.as_view()),
+    
 ]

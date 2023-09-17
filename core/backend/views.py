@@ -13,22 +13,41 @@ from rest_framework import generics
 from rest_framework import viewsets
 
 
+
+
+
+# check 13. Generic Viewsets
+# browsable API UI and POSTMAN same usage as before
+class ArticleViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
+                     mixins.CreateModelMixin, mixins.RetrieveModelMixin,
+                     mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    lookup_field = 'slug'
+
+
+
+
+
+
+
+
 # check 12. Viewsets Routers
 # browsable API UI and POSTMAN same usage as before
 # watch video why he only made list and create
-class ArticleViewSet(viewsets.ViewSet):
-    def list(self, request):
-        articles = Article.objects.all()
-        serializer = ArticleSerializer(articles, many=True)
-        return Response(serializer.data)
+# class ArticleViewSet(viewsets.ViewSet):
+#     def list(self, request):
+#         articles = Article.objects.all()
+#         serializer = ArticleSerializer(articles, many=True)
+#         return Response(serializer.data)
     
-    def create(self, request):
-        serializer = ArticleSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     def create(self, request):
+#         serializer = ArticleSerializer(data = request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
