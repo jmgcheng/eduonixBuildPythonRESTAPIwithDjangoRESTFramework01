@@ -8,53 +8,89 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework import mixins
+from rest_framework import generics
+
+
+# check 10. Mixins in Class Based View
+# browsable API UI and POSTMAN same usage as before
+class ArticleList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+# check 10. Mixins in Class Based View
+# browsable API UI and POSTMAN same usage as before
+class ArticleDetails(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
+    lookup_field = 'slug'
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+    
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+
+
 
 
 
 # check 09. Class Based API View
 # browsable API UI and POSTMAN same usage as before
 # 
-class ArticleList(APIView):
-    def get(self, request):
-        articles = Article.objects.all()
-        serializer = ArticleSerializer(articles, many=True)
-        return Response(serializer.data)
+# class ArticleList(APIView):
+#     def get(self, request):
+#         articles = Article.objects.all()
+#         serializer = ArticleSerializer(articles, many=True)
+#         return Response(serializer.data)
 
-    def post(self, request):
-        serializer = ArticleSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def post(self, request):
+#         serializer = ArticleSerializer(data = request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # check 09. Class Based API View
 # browsable API UI and POSTMAN same usage as before
 # 
-class ArticleDetails(APIView):
-    def get_object(self, slug):
-        try:
-            return Article.objects.get(slug=slug)
-        except Article.DoesNotExist:
-            raise Http404
+# class ArticleDetails(APIView):
+#     def get_object(self, slug):
+#         try:
+#             return Article.objects.get(slug=slug)
+#         except Article.DoesNotExist:
+#             raise Http404
     
-    def get(self, request, slug):
-        article = self.get_object(slug)
-        serializer = ArticleSerializer(article)
-        return Response(serializer.data)
+#     def get(self, request, slug):
+#         article = self.get_object(slug)
+#         serializer = ArticleSerializer(article)
+#         return Response(serializer.data)
     
-    def put(self, request, slug):
-        article = self.get_object(slug)
-        serializer = ArticleSerializer(article, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def put(self, request, slug):
+#         article = self.get_object(slug)
+#         serializer = ArticleSerializer(article, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug):
-        article = self.get_object(slug)
-        article.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     def delete(self, request, slug):
+#         article = self.get_object(slug)
+#         article.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
 
