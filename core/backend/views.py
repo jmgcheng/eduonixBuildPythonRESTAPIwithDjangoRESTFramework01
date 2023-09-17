@@ -13,6 +13,27 @@ from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAuthor
+
+
+
+
+# check 18. Custom Permissions
+# browsable API UI and Postman
+# rewatch the view for now
+#   about making sure this user can only edit his own article
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    lookup_field = 'slug'
+    # authentication_classes = (TokenAuthentication, )
+    permission_classes = [IsAuthenticated, IsAuthor]
+
+    def perform_create(self, serializer):
+        serializer.save(author = self.request.user)
+
+
+
 
 
 
@@ -30,15 +51,15 @@ from rest_framework.permissions import IsAuthenticated
 #       same procedure, just add key and value in Headers in Postman
 # Notes
 #   - you need to generate a token for every user going to use API when using this style, after that everything is just like the normal no authentication
-class ArticleViewSet(viewsets.ModelViewSet):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
-    lookup_field = 'slug'
-    # authentication_classes = (TokenAuthentication, )
-    permission_classes = [IsAuthenticated]
+# class ArticleViewSet(viewsets.ModelViewSet):
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleSerializer
+#     lookup_field = 'slug'
+#     # authentication_classes = (TokenAuthentication, )
+#     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(author = self.request.user)
+#     def perform_create(self, serializer):
+#         serializer.save(author = self.request.user)
 
 
 
