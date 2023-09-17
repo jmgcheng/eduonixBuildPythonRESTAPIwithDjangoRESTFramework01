@@ -5,6 +5,8 @@ from .models import Article
 # usage was again made on shell
 class ArticleSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
+    author = serializers.StringRelatedField()
+    
     class Meta:
         model = Article
         fields = '__all__'

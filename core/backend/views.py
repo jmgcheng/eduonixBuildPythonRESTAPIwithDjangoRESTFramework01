@@ -11,17 +11,34 @@ from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+
+# check 15. Authentication
+# browsable API UI
+# all usage was done in the browsable API UI. He was logging in NOT using postman
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    lookup_field = 'slug'
+    # authentication_classes = (TokenAuthentication, )
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(author = self.request.user)
+
 
 
 
 
 # check 14. Model Viewset
 # browsable API UI and POSTMAN same usage as before
-class ArticleViewSet(viewsets.ModelViewSet):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
-    lookup_field = 'slug'
-    
+# class ArticleViewSet(viewsets.ModelViewSet):
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleSerializer
+#     lookup_field = 'slug'
+
 
 
 
