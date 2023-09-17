@@ -15,9 +15,21 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
-# check 15. Authentication
-# browsable API UI
-# all usage was done in the browsable API UI. He was logging in NOT using postman
+
+# check 16. Token Authentication
+# browsable API UI and Postman
+# Tokens
+#   go to admin and create a token for a user in the Tokens table
+# postman
+#   GET
+#       http://127.0.0.1:8000/articles/
+#       Headers
+#           Key - Authorization
+#           Value - Token 77307ee03e3c947b660f79b7dff408e734f1b9b9
+#   POST, PUT, DELETE
+#       same procedure, just add key and value in Headers in Postman
+# Notes
+#   - you need to generate a token for every user going to use API when using this style, after that everything is just like the normal no authentication
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
@@ -27,6 +39,30 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author = self.request.user)
+
+
+
+
+
+
+
+
+
+
+
+
+# check 15. Authentication
+# browsable API UI
+# all usage was done in the browsable API UI. He was logging in NOT using postman
+# class ArticleViewSet(viewsets.ModelViewSet):
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleSerializer
+#     lookup_field = 'slug'
+#     # authentication_classes = (TokenAuthentication, )
+#     permission_classes = [IsAuthenticated]
+
+#     def perform_create(self, serializer):
+#         serializer.save(author = self.request.user)
 
 
 
