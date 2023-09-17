@@ -15,15 +15,26 @@ from rest_framework import viewsets
 
 
 
-
-# check 13. Generic Viewsets
+# check 14. Model Viewset
 # browsable API UI and POSTMAN same usage as before
-class ArticleViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
-                     mixins.CreateModelMixin, mixins.RetrieveModelMixin,
-                     mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     lookup_field = 'slug'
+    
+
+
+
+
+
+# check 13. Generic Viewsets
+# browsable API UI and POSTMAN same usage as before
+# class ArticleViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
+#                      mixins.CreateModelMixin, mixins.RetrieveModelMixin,
+#                      mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleSerializer
+#     lookup_field = 'slug'
 
 
 
