@@ -10,21 +10,51 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework import viewsets
+
+
+# check 12. Viewsets Routers
+# browsable API UI and POSTMAN same usage as before
+# watch video why he only made list and create
+class ArticleViewSet(viewsets.ViewSet):
+    def list(self, request):
+        articles = Article.objects.all()
+        serializer = ArticleSerializer(articles, many=True)
+        return Response(serializer.data)
+    
+    def create(self, request):
+        serializer = ArticleSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+# check 12. Viewsets Routers
+# browsable API UI and POSTMAN same usage as before
+
+
+
 
 
 # check 11. Generic Class Based View
 # browsable API UI and POSTMAN same usage as before
-class ArticleList(generics.ListCreateAPIView):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
+# class ArticleList(generics.ListCreateAPIView):
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleSerializer
 
 
 # check 11. Generic Class Based View
 # browsable API UI and POSTMAN same usage as before
-class ArticleDetails(generics.RetrieveUpdateDestroyAPIView):
-    lookup_field = 'slug'
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
+# class ArticleDetails(generics.RetrieveUpdateDestroyAPIView):
+#     lookup_field = 'slug'
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleSerializer
 
 
 
