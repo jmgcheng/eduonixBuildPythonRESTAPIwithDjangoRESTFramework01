@@ -4,6 +4,7 @@ from .models import Article
 # check 06. Model Serializer
 # usage was again made on shell
 class ArticleSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
     class Meta:
         model = Article
         fields = '__all__'
